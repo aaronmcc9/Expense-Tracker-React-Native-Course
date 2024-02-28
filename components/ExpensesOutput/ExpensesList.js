@@ -1,4 +1,4 @@
-import { FlatList, Text } from "react-native";
+import { FlatList } from "react-native";
 import ExpressItem from "./ExpenseItem";
 
 function renderExpenseItem(itemData) {
