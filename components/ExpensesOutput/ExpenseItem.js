@@ -7,11 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 function ExpressItem({ id, description, amount, date }) {
 
     const navigation = useNavigation();
-    console.log("HAHAHAH", id)
-
-
     function expensePressHandler() {
-
         navigation.navigate("ManageExpense", {
             expenseId: id
         })
@@ -41,7 +37,6 @@ const styles = StyleSheet.create({
         padding: 12,
         marginVertical: 8,
         backgroundColor: GlobalStyles.colors.primary500,
-        // flex: 1, 
         flexDirection: 'row',
         borderRadius: 6,
         justifyContent: 'space-between',
