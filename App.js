@@ -6,7 +6,7 @@ import RecentExpenses from "./screens/RecentExpenses";
 import AllExpenses from "./screens/AllExpenses";
 import ManageExpenses from "./screens/ManageExpenses";
 import { GlobalStyles } from "./constants/styles";
-import IconButton from "./components/ExpensesOutput/UI/IconButton";
+import IconButton from "./components/UI/IconButton";
 import ExpensesContextProvider from "./store/expense-context";
 
 const Stack = createStackNavigator();
@@ -31,9 +31,9 @@ function ExpensesOverview() {
         options={{
           title: "Recent Expenses",
           tabBarLabel: 'Recent',
-          tabBarIcon: ({ color, size }) => {
+          tabBarIcon: ({ color, size }) => (
             <IconButton icon='hourglass' size={size} color={color} onPress={() => { }} />
-          }
+          )
         }}
       ></BottomTabs.Screen>
       <BottomTabs.Screen
@@ -42,10 +42,9 @@ function ExpensesOverview() {
         options={{
           title: "All Expenses",
           tabBarLabel: 'All',
-          tabBarIcon: ({ color, size }) => {
+          tabBarIcon: ({ color, size }) => (
             <IconButton icon='calendar' size={size} color={color} onPress={() => { }} />
-            {/* <Ionicons name="calendar" color={color} size={size} /> */ }
-          }
+          )
         }}
       ></BottomTabs.Screen>
     </BottomTabs.Navigator>
