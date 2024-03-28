@@ -1,41 +1,10 @@
 import { createContext } from "react";
 import { useReducer } from "react";
-
-const DUMMY_EXPENSES = [
-    {
-        id: 'e1',
-        description: "Driving Lesson",
-        amount: 70.00,
-        date: new Date('2024-02-22')
-    },
-    {
-        id: 'e2',
-        description: "Groceries",
-        amount: 30.00,
-        date: new Date('2024-02-24')
-    },
-    {
-        id: 'e3',
-        description: "Cinema Ticket",
-        amount: 9.99,
-        date: new Date('2024-02-25')
-    },
-    {
-        id: 'e4',
-        description: "Japan Flights",
-        amount: 829.00,
-        date: new Date('2024-02-22')
-    },
-    {
-        id: 'e5',
-        description: "New Book",
-        amount: 14.99,
-        date: new Date('2024-02-12')
-    }
-];
+import { storeExpense } from "../util/http";
 
 export const ExpensesContext = createContext({
     expenses: [],
+    setExpenses: (expenses) => { },
     addExpense: ({ description, amount, date }) => { },
     deleteExpense: (id) => { },
     updateExpense: (id, { description, amount, date }) => { },
@@ -44,18 +13,17 @@ export const ExpensesContext = createContext({
 function expensesReducer(state, action) {
     switch (action.type) {
         case "ADD":
-            const id = new Date().toString() + Math.random().toString()
-            return [{ ...action.payload, id: id }, ...state]
+            return [{ ...action.payload }, ...state]
+        case "SET":
+            //reverse firebase ordering for most recent first
+            const invertedArray = action.payload.reverse();
+            return invertedArray;
         case "UPDATE":
             const updatableExpenseIndex = state.findIndex((e) => e.id === action.payload.id);
             const updatableExpense = state[updatableExpenseIndex];
             const updatedItem = { ...updatableExpense, ...action.payload.data }
             const updatedExpenses = [...state];
             updatedExpenses[updatableExpenseIndex] = updatedItem
-
-            console.log("updatedItem", updatedItem)
-            console.log("tttt", updatedExpenses[updatableExpenseIndex])
-            console.log("updatedExpenses", updatedExpenses)
 
             return updatedExpenses;
         case "DELETE":
@@ -69,10 +37,14 @@ function expensesReducer(state, action) {
 function ExpensesContextProvider({ children }) {
 
     //second value is the default value
-    const [expensesState, dispatch] = useReducer(expensesReducer, DUMMY_EXPENSES);
+    const [expensesState, dispatch] = useReducer(expensesReducer, []);
 
     function addExpense(expenseData) {
         dispatch({ type: 'ADD', payload: expenseData });
+    }
+
+    function setExpenses(expenses) {
+        dispatch({ type: 'SET', payload: expenses });
     }
 
     function deleteExpense(id) {
@@ -86,6 +58,7 @@ function ExpensesContextProvider({ children }) {
     const value = {
         expenses: expensesState,
         addExpense: addExpense,
+        setExpenses: setExpenses,
         updateExpense: updateExpense,
         deleteExpense: deleteExpense,
     }

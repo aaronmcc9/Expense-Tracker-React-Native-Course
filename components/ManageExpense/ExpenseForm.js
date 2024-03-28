@@ -23,7 +23,6 @@ function ExpenseForm({ onCancel, onSubmit, submitButtonLabel, defaultValues }) {
     })
 
     function inputChangedHandler(inputIdentifier, enteredValue) {
-        console.log("HERE", inputIdentifier, enteredValue)
 
         setInputs((currInputs) => {
             return {
@@ -31,18 +30,14 @@ function ExpenseForm({ onCancel, onSubmit, submitButtonLabel, defaultValues }) {
                 [inputIdentifier]: { value:enteredValue, isValid: true }
             }
         })
-
-        console.log("inputs", inputs)
     }
 
     function onSubmitHandler() {
-        console.log("SUBMIT", inputs)
         const expenseData = {
             amount: +inputs.amount.value, // +converts to number from str
             date: new Date(inputs.date.value),
             description: inputs.description.value
         }
-        console.log("HERE", expenseData)
 
         const amountIsValid = !isNaN(expenseData.amount) && expenseData.amount > 0;
         const dateIsValid = expenseData.date.toString() !== "Invalid Date";
